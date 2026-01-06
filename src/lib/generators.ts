@@ -125,10 +125,10 @@ export async function generateWebsiteContent(query: string, walletAddress: strin
   }))
 
   try {
-    if (!window.spark || !window.spark.llm) {
+    if (!window.spark || !window.spark.llm || !window.spark.llmPrompt) {
       throw new Error('Spark API not available')
     }
-    const prompt = `You are creating a comprehensive, educational website homepage based on this user query: ${query}
+    const promptText = `You are creating a comprehensive, educational website homepage based on this user query: ${query}
 
 Generate a complete website with:
 1. A clear, engaging title (5-10 words)
@@ -148,7 +148,7 @@ Return ONLY valid JSON in this exact format:
   "description": "Brief compelling description here",
   "content": "## Section 1\\n\\nParagraph content...\\n\\n## Section 2\\n\\nMore content..."
 }`
-    const response = await window.spark.llm(prompt, 'gpt-4o', true)
+    const response = await window.spark.llm(promptText, 'gpt-4o', true)
     const parsed = JSON.parse(response)
     
     return {
@@ -191,11 +191,11 @@ export async function generateWorldContent(
   }))
 
   try {
-    if (!window.spark || !window.spark.llm) {
+    if (!window.spark || !window.spark.llm || !window.spark.llmPrompt) {
       throw new Error('Spark API not available')
     }
     const slotInfo = slotCombination ? `- Slot Combination: ${slotCombination}` : ''
-    const prompt = `You are creating an educational game-world website based on the "${worldDef.name}" archetype.
+    const promptText = `You are creating an educational game-world website based on the "${worldDef.name}" archetype.
 
 World Details:
 - Name: ${worldDef.name}
@@ -216,7 +216,7 @@ Return ONLY valid JSON in this exact format:
   "description": "Compelling tagline about learning through play (15-25 words)",
   "content": "## Welcome to [World]\\n\\nIntroduction...\\n\\n## How It Works\\n\\nMechanics...\\n\\n## What You'll Learn\\n\\nEducational outcomes...\\n\\n## Get Started\\n\\nNext steps..."
 }`
-    const response = await window.spark.llm(prompt, 'gpt-4o', true)
+    const response = await window.spark.llm(promptText, 'gpt-4o', true)
     const parsed = JSON.parse(response)
     
     return {
@@ -254,10 +254,10 @@ export async function generatePageContent(websiteContext: string, pageQuery: str
   }))
 
   try {
-    if (!window.spark || !window.spark.llm) {
+    if (!window.spark || !window.spark.llm || !window.spark.llmPrompt) {
       throw new Error('Spark API not available')
     }
-    const prompt = `You are adding a new page to a website about ${websiteContext}.
+    const promptText = `You are adding a new page to a website about ${websiteContext}.
 
 The user wants to add a page about: ${pageQuery}
 
@@ -270,7 +270,7 @@ Return ONLY valid JSON in this exact format:
   "title": "Page Title Here",
   "content": "## Section\\n\\nContent here..."
 }`
-    const response = await window.spark.llm(prompt, 'gpt-4o', true)
+    const response = await window.spark.llm(promptText, 'gpt-4o', true)
     const parsed = JSON.parse(response)
     
     return {
